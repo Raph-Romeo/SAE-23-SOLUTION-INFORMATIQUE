@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+ <html>
+  <head>
+	{%load static%}
+	<link rel="stylesheet" href="{%static 'main.css' %}" type="text/css">
+	<title>{% block title %} Admin-Server {% endblock %} </title>
+  </head>
+  <body>
+   <nav>
+    <h1> <a href="/adminserver/">ADMINISTRATION DE SERVEURS</a> </h1>
+    <div class="liens"><a href="/adminserver/serveurs">SERVEURS</a><a href="/adminserver/typesServeurs">TYPES DE SERVEURS</a><a href="/adminserver/services">SERVICES</a><a href="/adminserver/applications">APPLICATIONS</a><a href="/adminserver/utilisateurs">UTILISATEURS</a></div>
+   </nav>
+	{% block content %}
+	{% endblock %}
+  </body>
+ </html>

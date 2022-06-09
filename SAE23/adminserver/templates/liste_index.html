@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% block title %}
+Admin-Serveur | {{title}}
+{% endblock %}
+{% block content %}
+<h2> {{title}} </h2>
+<ol>
+{% for i in objects %}
+    <li><a href="/affiche/{{url}}/{{i.id}}/">{{i}}</a> {%if "extra" != ""%} <div class="{{extra}}"></div> {%endif%}</li>
+{% endfor %}
+</ol>
+{% endblock %}

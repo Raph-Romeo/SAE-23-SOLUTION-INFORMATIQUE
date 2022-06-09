@@ -46,13 +46,15 @@ class servicesForm(ModelForm):
         }
         localized_fields = ('date_de_lancement',)
 
-class applications(ModelForm):
+class applicationsForm(ModelForm):
     class Meta:
-        model = models.services
-        fields = ('nom_application','logo','serveurs','utilisateurs')
+        model = models.applications
+        fields = ('nom_application','logo','serveurs','utilisateurs','memoire_vive_necessaire','services_utilises')
         labels = {
             'nom_application' : _("Nom de l'application:"),
             'logo' : _('Logo:'),
             'serveurs' : _('Serveurs:'),
             'utilisateurs' : _("Utilisateurs de l'application:"),
+            'memoire_vive_necessaire' : _('Memoire vive necessaire'),
+            'services_utilises' : _('Services utilises'),
         }

@@ -1,3 +1,4 @@
+import django.utils.timezone
 from django.db import models
 
 # Create your models here.
@@ -19,7 +20,6 @@ class serveurs(models.Model):
     memoire = models.IntegerField(blank=False)
     stockage = models.IntegerField(blank=False)
 
-
     def __str__(self):
         return self.nom
 
@@ -32,7 +32,7 @@ class utilisateurs(models.Model):
     email = models.EmailField(blank=False, null=True)
 
     def __str__(self):
-        return self.nom + " " + self.prenom
+        return self.email
 
     def dico(self):
         return {"nom": self.nom,"prenom":self.prenom,"email":self.email}
@@ -40,7 +40,7 @@ class utilisateurs(models.Model):
 
 class services(models.Model):
     nom_service = models.CharField(max_length=100,blank=False)
-    date_de_lancement = models.DateField(max_length=100,blank=False)
+    date_de_lancement = models.DateField(max_length=100,blank=False,default=django.utils.timezone.now)
     espace_memoire_utilise = models.IntegerField(blank=False)
     memoire_vive_necessaire = models.IntegerField(blank=False)
     serveur_de_lancement = models.ForeignKey(serveurs, on_delete=models.CASCADE, null="true")
@@ -54,8 +54,11 @@ class services(models.Model):
 class applications(models.Model):
     nom_application = models.CharField(max_length=100,blank=False)
     logo = models.ImageField(upload_to='images')
-    serveurs = models.ForeignKey(serveurs, on_delete=models.CASCADE, null="true")
+    serveurs = models.ManyToManyField(serveurs)
     utilisateurs = models.ForeignKey(utilisateurs, on_delete=models.CASCADE, null="true")
+    espace_memoire_utilise = models.IntegerField(blank=False)
+    memoire_vive_necessaire = models.IntegerField(blank=False)
+    services_utilises = models.ManyToManyField(services)
 
     def __str__(self):
         return self.nom_application
