@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(null='true', on_delete=django.db.models.deletion.CASCADE, to='adminserver.type_de_serveurs'),
         ),
         migrations.CreateModel(
-            name='applications',
+            name='application',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('nom_application', models.CharField(max_length=100)),

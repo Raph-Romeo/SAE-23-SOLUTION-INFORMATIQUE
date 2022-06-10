@@ -22,7 +22,7 @@ urlpatterns = [
     path('affiche/typeServeur/<int:id>/',views.affiche_typeserveur),
     path('affiche/utilisateur/<int:id>/',views.affiche_utilisateur),
     path('affiche/service/<int:id>/',views.affiche_service),
-    path('affiche/application/<int:id>/',views.ajout_application),
+    path('affiche/application/<int:id>/',views.affiche_application),
 #UPDATES
     path('update/serveur/<int:id>/', views.update_serveur),
     path('update/typeServeur/<int:id>/', views.update_typeserveur),

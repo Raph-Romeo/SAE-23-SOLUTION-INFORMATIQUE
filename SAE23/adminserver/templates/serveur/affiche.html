@@ -1,9 +1,30 @@
 {% extends "main.html" %}
 {% block title %}
-Admin-Serveur - Affiche
+Admin-Serveur - {{serveur.nom}}
 {% endblock %}
 {% block content %}
 
-<h2> AFFICHE </h2>
+<h2> {{serveur.nom}} </h2>
+
+<p> Le serveur {{serveur.nom}} est de type {{serveur.type_de_serveur}}.</p>
+
+<hr>
+
+<h2>Les services associés a ce serveur:</h2>
+
+<ol class="liste">
+{% for i in services %}
+<li><a href="/affiche/service/{{i.id}}/">{{i}}</a></li>
+{% endfor %}
+</ol>
+
+<hr>
+
+<h2>Les applications associées a ce serveur:</h2>
+<ol class="liste">
+{% for i in applications %}
+<li><a href="/affiche/application/{{i.id}}/">{{i}}</a></li>
+{% endfor %}
+</ol>
 
 {% endblock %}

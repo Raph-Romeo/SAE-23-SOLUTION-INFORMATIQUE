@@ -49,12 +49,13 @@ class servicesForm(ModelForm):
 class applicationsForm(ModelForm):
     class Meta:
         model = models.applications
-        fields = ('nom_application','logo','serveurs','utilisateurs','memoire_vive_necessaire','services_utilises')
+        fields = ('nom_application','logo','serveurs','utilisateurs','memoire_vive_necessaire','espace_memoire_utilise','services_utilises')
         labels = {
             'nom_application' : _("Nom de l'application:"),
             'logo' : _('Logo:'),
             'serveurs' : _('Serveurs:'),
             'utilisateurs' : _("Utilisateurs de l'application:"),
+            'espace_memoire_utilise' : _("Espace memoire utilisée par l'application:"),
             'memoire_vive_necessaire' : _('Memoire vive necessaire'),
             'services_utilises' : _('Services utilises'),
         }

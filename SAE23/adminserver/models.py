@@ -61,7 +61,7 @@ class applications(models.Model):
     services_utilises = models.ManyToManyField(services)
 
     def __str__(self):
-        return self.nom_application
+        return str(self.nom_application)
 
     def dico(self):
         return {"nom_application":self.nom_application,"logo":self.logo,"serveurs":self.serveurs,"utilisateurs":self.utilisateurs}

@@ -14,3 +14,25 @@ form > li > input{min-width:200px;}
 .server_img{width:200px;height:200px;background:url(/static/server.png);background-size:100%}
 ol{display:flex;width:80vw;flex-wrap:wrap;}
 ol > li{padding:80px;list-style:none;text-align:center;}
+
+progress {
+  border: none;
+  width: 200px;
+  height: 10px;
+  border-radius:10px;
+  background: crimson;
+}
+
+.progress {
+  color: white;font-family:arial;font-weight:1;background:#CCC;display:flex;height:20px;align-items:center;border-radius:10px;
+}
+.progress > p{width:200px;text-align:center;z-index:10}
+
+.value{background:blue;height:20px;border-radius:10px;}
+
+hr{width:80vw;}
+
+p{color:#222;font-size:18px;font-family:tahoma;font-weight:1;}
+
+.liste{display:flex;width:50vw;flex-direction:column;align-items:center;}
+.liste > li {margin:10px}

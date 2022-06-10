@@ -6,7 +6,7 @@ Admin-Serveur | {{title}}
 <h2> {{title}} </h2>
 <ol>
 {% for i in objects %}
-    <li><a href="/affiche/{{url}}/{{i.id}}/">{{i}}</a> {%if "extra" != ""%} <div class="{{extra}}"></div> {%endif%}</li>
+    <li><a href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><br><a href="/update/{{url}}/{{i.id}}/">Ajourner</a> {%if extra != ""%} <div class="{{extra}}"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div> <p style="position:absolute">{{i.progress}}%</p></div> {% endif %} </li>
 {% endfor %}
 </ol>
 {% endblock %}
