@@ -4,7 +4,7 @@ body{display:flex;align-items:center;flex-direction:column;min-height:100vh;widt
 h1{color:white;font-family:Tahoma;padding:20px;font-weight:1;color:#e5e5e7;border-right:solid #e5e5e7 1px;}
 h2{color:#222;font-family:Tahoma;padding:20px;font-weight:1;}
 .liens{display:flex;justify-content:justify-content:center;width:100%;}
-nav > * > a{color:white;font-family:Monospace;width:100%;text-align:center;}
+nav > * > a{color:#888;font-family:tahoma;font-weight:lighter;width:100%;text-align:center;font-size:16px;text-decoration:none;}
 nav > h1 > a{text-decoration:none;font-family:tahoma;font-size:20px;}
 form{display:flex;flex-direction:column;align-items:center;}
 form > li {list-style:none;display:flex;flex-direction:column;align-items:center;padding:20px;}
@@ -13,7 +13,21 @@ form > li > select{min-width:200px;}
 form > li > input{min-width:200px;}
 .server_img{width:200px;height:200px;background:url(/static/server.png);background-size:100%}
 ol{display:flex;width:80vw;flex-wrap:wrap;}
-ol > li{padding:80px;list-style:none;text-align:center;}
+ol > li{padding:80px;list-style:none;text-align:center;outline:1px solid #222;outline-offset:-40px;}
+
+.error{color:#803030;font-size:22px;font-family:tahoma;font-weight:1;margin-top:20px;}
+.addlink{font-size:16px;font-family:arial;font-weight:bold;color:#222}
+.yes{font-size:25px;font-family:arial;font-weight:bold;color:#222;margin-top:50px;border:1px solid black;padding:5px;text-decoration:none;border-radius:5px;box-shadow:1px 1px 1px #AAA}
+.yes:active{background:#CCC;box-shadow:none;}
+
+.object_title{font-size:20px;}
+
+.container{width:80vw;display:flex;margin-top:50px;}
+.container > * > h2{text-align:center;}
+.left{border-right:1px solid #222;}
+.container > *{width:50%}
+ul{max-width:100%;}
+
 
 progress {
   border: none;
@@ -23,12 +37,15 @@ progress {
   background: crimson;
 }
 
+li > a{color:#444;line-height:25px;font-family:system-UI,arial}
+line{margin-right:5px;margin-left:5px;}
+
 .progress {
-  color: white;font-family:arial;font-weight:1;background:#CCC;display:flex;height:20px;align-items:center;border-radius:10px;
+  color: white;font-family:arial;font-weight:1;background:#CCC;display:flex;height:15px;align-items:center;outline:1px solid #222;
 }
 .progress > p{width:200px;text-align:center;z-index:10}
 
-.value{background:blue;height:20px;border-radius:10px;}
+.value{background:blue;height:15px;}
 
 hr{width:80vw;}
 

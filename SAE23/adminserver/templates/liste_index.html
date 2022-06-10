@@ -4,9 +4,15 @@ Admin-Serveur | {{title}}
 {% endblock %}
 {% block content %}
 <h2> {{title}} </h2>
+{% if count == 0 %}
+<h3 class="error"> Oups. Il semblerait qu'il n'y a aucun élément de cette catégorie. Voulez vous en rajouter?</h3>
+<a class="yes" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+{% elif count > 0 %}
+<a class="addlink" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
 <ol>
 {% for i in objects %}
-    <li><a href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><br><a href="/update/{{url}}/{{i.id}}/">Ajourner</a> {%if extra != ""%} <div class="{{extra}}"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div> <p style="position:absolute">{{i.progress}}%</p></div> {% endif %} </li>
+    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a> {%if extra != ""%} <div class="{{extra}}"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div></div><p>{{i.ratio}}</p> {% endif %} </li>
 {% endfor %}
 </ol>
+{% endif %}
 {% endblock %}

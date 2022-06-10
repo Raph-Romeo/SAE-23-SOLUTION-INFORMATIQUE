@@ -4,27 +4,43 @@ Admin-Serveur - {{serveur.nom}}
 {% endblock %}
 {% block content %}
 
-<h2> {{serveur.nom}} </h2>
+<h2> SERVEUR: {{serveur.nom}} </h2>
 
-<p> Le serveur {{serveur.nom}} est de type {{serveur.type_de_serveur}}.</p>
+<p> Le serveur {{serveur.nom}} est de type {{serveur.type_de_serveur}}. </p>
+<p> Stockage: {{serveur.stockage_adapt}} | {{serveur.ratio}} ({{serveur.progress}})</p>
+<p> Memoire : {{serveur.memoire}}Mo  ({{serveur.memory_percent}})</p>
+<p> Nombre de processeurs : {{serveur.processeurs}} </p>
 
-<hr>
-
+{% if applications_count > 0 or services_count > 0 %}
+<div class="container">
+<div class="left">
+{% if services_count > 0 %}
 <h2>Les services associés a ce serveur:</h2>
 
-<ol class="liste">
+<ul class="liste">
 {% for i in services %}
 <li><a href="/affiche/service/{{i.id}}/">{{i}}</a></li>
 {% endfor %}
-</ol>
-
-<hr>
+</ul>
+{% else %}
+<h2 class="error">Aucun service n'est associé a ce serveur</h2>
+{% endif %}
+</div>
+<div class="right">
+{% if applications_count > 0 %}
 
 <h2>Les applications associées a ce serveur:</h2>
-<ol class="liste">
+<ul class="liste">
 {% for i in applications %}
 <li><a href="/affiche/application/{{i.id}}/">{{i}}</a></li>
 {% endfor %}
-</ol>
-
+</ul>
+{% else %}
+<h2 class="error">Aucune application n'est associée a ce serveur</h2>
+{% endif %}
+</div>
+</div>
+{% else %}
+<h2 class="error">Aucun service ou application n'est associé a ce serveur</h2>
+{% endif %}
 {% endblock %}

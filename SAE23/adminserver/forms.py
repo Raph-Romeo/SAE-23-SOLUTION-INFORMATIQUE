@@ -19,8 +19,8 @@ class serveursForm(ModelForm):
             'nom' : _('Nom du serveur:'),
             'type_de_serveur' : _('Type du serveur:'),
             'processeurs' : _('Nombre de processeurs:'),
-            'memoire' : _('Memoire du serveur (MegaOctets):'),
-            'stockage' : _('Espace de stockage du serveur (GigaOctets):'),
+            'memoire' : _('Memoire du serveur (Mo):'),
+            'stockage' : _('Espace de stockage du serveur (Mo):'),
         }
 
 class utilisateursForm(ModelForm):

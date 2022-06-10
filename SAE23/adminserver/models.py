@@ -64,4 +64,4 @@ class applications(models.Model):
         return str(self.nom_application)
 
     def dico(self):
-        return {"nom_application":self.nom_application,"logo":self.logo,"serveurs":self.serveurs,"utilisateurs":self.utilisateurs}
+        return {"nom_application":self.nom_application,"logo":self.logo.file,"serveurs":self.serveurs.all(),"utilisateurs":self.utilisateurs,"espace_memoire_utilise":self.espace_memoire_utilise,"memoire_vive_necessaire":self.memoire_vive_necessaire,"services_utilises":self.services_utilises.all()}
