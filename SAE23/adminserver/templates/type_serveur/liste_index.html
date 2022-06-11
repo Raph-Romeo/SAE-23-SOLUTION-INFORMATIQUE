@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block title %}
+Admin-Serveur | {{title}}
+{% endblock %}
+{% block content %}
+<h2> {{title}} </h2>
+{% if count == 0 %}
+<h3 class="error"> Oups. Il semblerait qu'il n'y a aucun élément de cette catégorie. Voulez vous en rajouter?</h3>
+<a class="yes" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+{% elif count > 0 %}
+<a class="addlink" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+<ul style="margin-top:25px;max-width:80%;list-style:none;">
+{% for i in objects %}
+    <hr><br><li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><br><p style="margin-left:20px;width:calc(100% - 40px);text-align:justify">Description : {{i.description}}</p><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a></li><br>
+{% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

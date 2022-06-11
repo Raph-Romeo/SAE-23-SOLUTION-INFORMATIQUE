@@ -5,11 +5,12 @@ Admin-Serveur - {{serveur.nom}}
 {% block content %}
 
 <h2> SERVEUR: {{serveur.nom}} </h2>
-
+<div class="text">
 <p> Le serveur {{serveur.nom}} est de type {{serveur.type_de_serveur}}. </p>
 <p> Stockage: {{serveur.stockage_adapt}} | {{serveur.ratio}} ({{serveur.progress}})</p>
-<p> Memoire : {{serveur.memoire}}Mo  ({{serveur.memory_percent}})</p>
+<p> Memoire vive: {{serveur.memoire}}Mo  ({{serveur.memory_percent}})</p>
 <p> Nombre de processeurs : {{serveur.processeurs}} </p>
+</div>
 
 {% if applications_count > 0 or services_count > 0 %}
 <div class="container">

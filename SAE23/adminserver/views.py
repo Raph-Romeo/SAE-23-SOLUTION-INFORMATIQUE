@@ -158,7 +158,7 @@ def typesServeurs_index(request):
     URL = "typeServeur"
     typesServeurs = list(models.type_de_serveurs.objects.all())
     num = len(list(models.type_de_serveurs.objects.all()))
-    return render(request,"liste_index.html",{"objects" : typesServeurs,"title":"TYPES DE SERVEURS","extra":"","url":URL,"count":num})
+    return render(request,"type_serveur/liste_index.html",{"objects" : typesServeurs,"title":"TYPES DE SERVEURS","extra":"","url":URL,"count":num})
 
 def ajout_typeserveur(request):
     title = "Ajouter un type de serveur"
