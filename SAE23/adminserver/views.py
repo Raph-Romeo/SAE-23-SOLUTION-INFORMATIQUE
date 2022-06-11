@@ -98,7 +98,7 @@ def ajout_serveur(request):
 
 def update_serveur(request, id):
     url = "serveur"
-    title ="Mettre a jour un serveur"
+    title ="Mettre a jour le serveur : " + str(models.serveurs.objects.get(pk=id).nom)
     if request.method == "POST":
         form = serveursForm(request.POST)
         if form.is_valid():
@@ -111,13 +111,13 @@ def update_serveur(request, id):
                 serveur.save()
                 return HttpResponseRedirect("/adminserver/serveurs")
             else:
-                return render(request, "update.html", {"form": form, "url": url,"title": "L'espace de stockage sur ce serveur est insufisant!","id":id})
+                return render(request, "update.html", {"form": form, "url": url,"error": "L'espace de stockage sur ce serveur est insufisant!","id":id,"title":title})
         else:
             return render(request, "update.html", {"form": form, "url": url, "title": title,"id":id})
     else:
         serveur = models.serveurs.objects.get(pk=id)
         form = serveursForm(serveur.dico())
-        return render(request, "update.html", {"form": form,"id":id,"url":url})
+        return render(request, "update.html", {"form": form,"id":id,"url":url,"title":title})
 
 def delete_serveur(request, id):
     serveur = models.serveurs.objects.get(pk=id)
@@ -175,6 +175,7 @@ def ajout_typeserveur(request):
         return render(request,"ajout.html",{"form" : form,"url":url,"title":title})
 
 def update_typeserveur(request, id):
+    title = "Mettre a jour le type de serveur : " + str(models.type_de_serveurs.objects.get(pk=id).type)
     if request.method == "POST":
         form = type_de_serveursForm(request.POST)
         if form.is_valid():
@@ -183,11 +184,11 @@ def update_typeserveur(request, id):
             type_serveur.save()
             return HttpResponseRedirect("/adminserver/typesServeurs")
         else:
-            return render(request, "update.html", {"form": form, "id": id,"url":"typeServeur"})
+            return render(request, "update.html", {"form": form, "id": id,"url":"typeServeur","title":title})
     else:
         type_serveur = models.type_de_serveurs.objects.get(pk=id)
         form = type_de_serveursForm(type_serveur.dico())
-        return render(request, "update.html", {"form": form,"id":id,"url":"typeServeur"})
+        return render(request, "update.html", {"form": form,"id":id,"url":"typeServeur","title":title})
 
 def delete_typeserveur(request, id):
     type_serveur = models.type_de_serveurs.objects.get(pk=id)
@@ -196,7 +197,33 @@ def delete_typeserveur(request, id):
 
 def affiche_typeserveur(request, id):
     typeServeur = models.type_de_serveurs.objects.get(pk=id)
-    return render(request,"type_serveur/affiche.html",{"typeServeur" : typeServeur})
+    serveurs = list(models.serveurs.objects.filter(type_de_serveur=typeServeur))
+    num = len(serveurs)
+    for i in serveurs:
+        count = 0
+        for q in list(models.services.objects.filter(serveur_de_lancement=i.id)):
+            count = count + q.espace_memoire_utilise
+        for q in list(models.applications.objects.filter(serveurs=i.id)):
+            count = count + q.espace_memoire_utilise
+        i.progress = round((count/i.stockage)*100,2)
+        if i.progress >= 0:
+            i.color = "#24a4dc"
+            if i.progress >= 75:
+                i.color = "orange"
+                if i.progress >= 90:
+                    i.color = "#d92624"
+        if len(str(i.stockage - count)) > 6:
+            i.ratio = str(round((i.stockage - count) / 1000000, 2)) + "To restants"
+        elif len(str(i.stockage - count)) > 3:
+            i.ratio = str(round((i.stockage - count)/1000,2)) + "Go restants"
+        elif i.stockage - count > 0:
+            i.ratio = str(i.stockage - count) + "Mo restants"
+        elif i.stockage - count == 0:
+            i.ratio = "FULL"
+        else:
+            i.ratio = "ERROR"
+        i.progress = str(i.progress).replace(",", ".")
+    return render(request,"type_serveur/affiche.html",{"typeServeur" : typeServeur,"serveurs":serveurs,"count":num})
 
 #CRUD SERVICE ==========================================================================================================================
 
@@ -219,7 +246,7 @@ def ajout_service(request):
                 form.save()
                 return HttpResponseRedirect("/adminserver/services")
             else:
-                return render(request,"ajout.html",{"form" : form,"url":url,"title":"L'espace de stockage sur ce serveur est insufisant!"})
+                return render(request,"ajout.html",{"form" : form,"url":url,"erreur":"L'espace de stockage sur ce serveur est insufisant!","title":title})
         else:
             return render(request,"ajout.html",{"form" : form,"url":url,"title":title})
     else:
@@ -228,7 +255,7 @@ def ajout_service(request):
 
 def update_service(request, id):
     url = "service"
-    title = "ARJOURNER LE SERVICE " + models.services.objects.get(id=id).nom_service
+    title = "Mettre a jour le service: " + models.services.objects.get(id=id).nom_service
     if request.method == "POST":
         form = servicesForm(request.POST)
         if form.is_valid():
@@ -241,7 +268,7 @@ def update_service(request, id):
                 service.save()
                 return HttpResponseRedirect("/adminserver/services")
             else:
-                return render(request, "update.html", {"form": form,"id":id, "url": url,"title": "L'espace de stockage sur le serveur est insufisant!"})
+                return render(request, "update.html", {"form": form,"id":id, "url": url,"error": "L'espace de stockage sur le serveur est insufisant!","title":title})
         else:
             return render(request, "update.html", {"form": form, "url": url,"id":id, "title": title})
     else:
@@ -264,7 +291,7 @@ def applications_index(request):
     URL = "application"
     applications = list(models.applications.objects.all())
     num = len(list(models.applications.objects.all()))
-    return render(request,"liste_index.html",{"objects" : applications,"title":"APPLICATIONS","extra":"","url":URL,"count":num})
+    return render(request,"application/liste_index.html",{"objects" : applications,"title":"APPLICATIONS","extra":"","url":URL,"count":num})
 
 def ajout_application(request):
     title = "Ajouter une application"
@@ -289,9 +316,9 @@ def ajout_application(request):
                         server_list = server_list + " , " + str(i.nom)
             if temp > 0:
                 if temp == 1:
-                    return render(request,"ajout.html",{"form" : form,"url":url,"title":"L'espace de stockage ou la memoire sur le serveur " + server_list + " sont insufisants!"})
+                    return render(request,"ajout.html",{"form" : form,"url":url,"title":title,"error":"L'espace de stockage ou la memoire sur le serveur " + server_list + " sont insufisants!"})
                 else:
-                    return render(request, "ajout.html", {"form": form, "url": url,"title": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
+                    return render(request, "ajout.html", {"form": form, "url": url,"title":title,"error": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
             else:
                 form.save()
                 return HttpResponseRedirect("/adminserver/applications")
@@ -324,9 +351,9 @@ def update_application(request, id):
                         server_list = server_list + " , " + str(i.nom)
             if temp > 0:
                 if temp == 1:
-                    return render(request, "update.html", {"form": form, "url": url,"id":id,"title": "L'espace de stockage ou la memoire sur le serveur " + server_list + " sont insufisants!"})
+                    return render(request, "update.html", {"form": form, "url": url,"id":id,"title":title,"error": "L'espace de stockage ou la memoire sur le serveur " + server_list + " sont insufisants!"})
                 else:
-                    return render(request, "update.html", {"form": form, "url": url,"id":id,"title": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
+                    return render(request, "update.html", {"form": form, "url": url,"id":id,"title":title,"error": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
             else:
                 application = form.save(commit=False)
                 application.id = id
@@ -373,6 +400,7 @@ def ajout_utilisateur(request):
         return render(request,"ajout.html",{"form" : form,"url":url,"title":title})
 
 def update_utilisateur(request, id):
+    title = "Mettre a jour l'utilisateur : " + str(models.utilisateurs.objects.get(pk=id).email)
     if request.method == "POST":
         form = utilisateursForm(request.POST)
         if form.is_valid():
@@ -381,11 +409,11 @@ def update_utilisateur(request, id):
             utilisateur.save()
             return HttpResponseRedirect("/adminserver/utilisateurs")
         else:
-            return render(request, "update.html", {"form": form, "id": id,"url":"utilisateur"})
+            return render(request, "update.html", {"form": form, "id": id,"url":"utilisateur","title":title})
     else:
         serveur = models.utilisateurs.objects.get(pk=id)
         form = utilisateursForm(serveur.dico())
-        return render(request, "update.html", {"form": form,"id":id,"url":"utilisateur"})
+        return render(request, "update.html", {"form": form,"id":id,"url":"utilisateur","title":title})
 
 def delete_utilisateur(request, id):
     utilisateur = models.utilisateurs.objects.get(pk=id)

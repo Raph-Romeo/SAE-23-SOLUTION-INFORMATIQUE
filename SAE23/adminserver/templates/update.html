@@ -4,6 +4,7 @@ Admin-Serveur | {{title}}
 {% endblock %}
 {% block content %}
 <h2> {{title}} </h2>
+<p class="errorlist"> {{error}} </p>
 <form method="post" action="/adminserver/update/{{url}}/{{id}}/" enctype="multipart/form-data">
 {% csrf_token %}
 {{ form.as_ul }}

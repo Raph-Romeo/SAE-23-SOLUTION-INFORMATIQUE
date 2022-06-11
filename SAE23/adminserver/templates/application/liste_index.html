@@ -1,0 +1,18 @@
+{% extends "main.html" %}
+{% block title %}
+Admin-Serveur | {{title}}
+{% endblock %}
+{% block content %}
+<h2> {{title}} </h2>
+{% if count == 0 %}
+<h3 class="error"> Il n'y a aucune application. Voulez vous en rajouter? </h3>
+<a class="yes" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+{% elif count > 0 %}
+<a class="addlink" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+<ol>
+{% for i in objects %}
+    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a><br><br><img src="/media/{{i.logo}}" style="height:200px"></div></li>
+{% endfor %}
+</ol>
+{% endif %}
+{% endblock %}

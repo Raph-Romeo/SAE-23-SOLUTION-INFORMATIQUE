@@ -40,7 +40,7 @@ class utilisateurs(models.Model):
 
 class services(models.Model):
     nom_service = models.CharField(max_length=100,blank=False)
-    date_de_lancement = models.DateField(max_length=100,blank=False,default=django.utils.timezone.now)
+    date_de_lancement = models.DateField(max_length=100,blank=False,default=django.utils.timezone.now())
     espace_memoire_utilise = models.IntegerField(blank=False)
     memoire_vive_necessaire = models.IntegerField(blank=False)
     serveur_de_lancement = models.ForeignKey(serveurs, on_delete=models.CASCADE, null="true")

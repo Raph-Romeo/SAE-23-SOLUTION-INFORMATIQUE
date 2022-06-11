@@ -13,22 +13,26 @@ form > li > label{color:#222;font-family:tahoma;font-weight:1;font-size:18px;}
 form > li > select{min-width:200px;}
 form > li > input{min-width:200px;}
 .server_img{width:200px;height:200px;background:url(/static/server.png);background-size:100%}
-ol{display:flex;width:80vw;flex-wrap:wrap;}
-ol > li{padding:80px;list-style:none;text-align:center;outline:1px solid #222;outline-offset:-40px;}
+ol{display:flex;width:80vw;flex-wrap:wrap;justify-content:center;}
+ol > li{padding:40px;margin:40px;list-style:none;text-align:center;border-radius:5px;background:#EEE;box-shadow:#BBB 5px 5px 5px;transition:0.2s}
+
+ol > li:hover{transition:0.2s;transform:scale(1.05);}
 
 .home-2{display:flex;width:100%;justify-content:center;align-items:center;}
 
 .text{line-height:4;text-align:center;}
 .error{color:#803030;font-size:22px;font-family:tahoma;font-weight:1;margin-top:20px;}
 .addlink{font-size:16px;font-family:arial;font-weight:bold;color:#115e99}
-.yes{font-size:25px;font-family:arial;font-weight:bold;color:#222;margin-top:50px;border:1px solid black;padding:5px;text-decoration:none;border-radius:5px;box-shadow:1px 1px 1px #AAA}
+.yes{font-size:25px;font-family:tahoma;font-weight:1;color:#444;margin-top:50px;padding:5px;text-decoration:none;border-radius:5px;background:#E2E2E2}
 .yes:active{background:#CCC;box-shadow:none;}
 
 .bg{clip-path: polygon(0 0, 100% 0, 100% 91%, 0% 100%);background:url(/static/background.jpg);margin-top:50px;width:100%;min-height:80vh;display:flex;justify-content:center;align-items:center;margin-bottom:25px;flex-direction:column;background-size:cover;background-attachment:fixed;}
 h2{font-size:26px;}
 
-.object_title{font-size:20px;}
+.errorlist{color:red;font-family:tahoma;}
 
+.object_title{font-size:20px;}
+.space{height:40vh;}
 .container{width:80vw;display:flex;margin-top:50px;}
 .container > * > h2{text-align:center;}
 .left{border-right:1px solid #222;}

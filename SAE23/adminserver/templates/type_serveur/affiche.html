@@ -4,6 +4,26 @@ Admin-Serveur - Affiche
 {% endblock %}
 {% block content %}
 
-<h2> AFFICHE </h2>
+<h2> {{typeServeur.type}} </h2>
+<p> {{typeServeur.description}} </p>
+
+<div style="height:20vh"></div>
+
+<hr>
+{% if count > 0 %}
+<h2> Liste des serveurs de ce type: </h2>
+
+<ol>
+
+{% for i in serveurs %}
+
+<li><a class="object_title" href="/affiche/serveur/{{i.id}}/">{{i}}</a><br><a href="/delete/serveur/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/serveur/{{i.id}}/">Ajourner</a><div class="server_img"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div></div><p>{{i.ratio}}</p></li>
+
+{% endfor %}
+
+</ol>
+{% else %}
+<h3 class="error"> Il semblerait qu'il n'y a aucun serveur de ce type.</h3>
+{% endif %}
 
 {% endblock %}
