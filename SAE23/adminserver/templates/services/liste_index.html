@@ -12,8 +12,40 @@ Admin-Serveur | {{title}}
 <p class="errorlist" style="margin:10px"> {{error}} </p>
 <div class="services">
 {% for i in objects %}
-    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a></li>
+    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a style="text-decoration:underline;cursor:pointer;" name="delete" id="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a></li>
 {% endfor %}
 </div>
 {% endif %}
+
+<script>
+	var all = document.getElementsByName('delete');
+
+	for (var i=0; i<all.length; i++)
+	{
+		all.item(i).onclick = function ()
+		{
+			prompt(this.id);
+		}
+	}
+
+	function prompt(element){
+	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;border-radius:15px;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;box-shadow:50px 50px 500px black;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir supprimer ce service?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
+	    document.body.style.pointerEvents = "none";
+	}
+
+	function move(url){
+	    window.location.replace(url);
+	}
+
+	function annuler(){
+	    document.getElementById("prompt").remove();
+	    document.body.style.pointerEvents = "all";
+	    for (var i=0; i<all.length; i++){
+		    all.item(i).onclick = function (){
+			    prompt(this.id);
+		    }
+	    }
+	}
+</script>
+
 {% endblock %}

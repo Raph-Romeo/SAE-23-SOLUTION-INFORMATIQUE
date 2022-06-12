@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+import os
 from .forms import applicationsForm
 from .forms import servicesForm
 from .forms import utilisateursForm
@@ -19,10 +20,16 @@ def count_server_storage(element,id,type):
         return count
     else:
         for q in list(models.services.objects.filter(serveur_de_lancement=element.id)):
-            if q.id != id and type=="service":
+            if type=="service":
+                if q.id != id:
+                    count = count + q.espace_memoire_utilise
+            else:
                 count = count + q.espace_memoire_utilise
         for q in list(models.applications.objects.filter(serveurs=element.id)):
-            if q.id != id and type=="application":
+            if type=="application":
+                if q.id != id:
+                    count = count + q.espace_memoire_utilise
+            else:
                 count = count + q.espace_memoire_utilise
         return count
 
@@ -36,10 +43,16 @@ def count_server_memory(element,id,type):
         return count
     else:
         for q in list(models.services.objects.filter(serveur_de_lancement=element.id)):
-            if q.id != id and type=="service":
+            if type=="service":
+                if q.id != id:
+                    count = count + q.memoire_vive_necessaire
+            else:
                 count = count + q.memoire_vive_necessaire
         for q in list(models.applications.objects.filter(serveurs=element.id)):
-            if q.id != id and type=="application":
+            if type=="application":
+                if q.id != id:
+                    count = count + q.memoire_vive_necessaire
+            else:
                 count = count + q.memoire_vive_necessaire
         return count
 
@@ -88,6 +101,10 @@ def ajout_serveur(request):
     if request.method == "POST":
         form = serveursForm(request.POST)
         if form.is_valid():
+            nom = form.cleaned_data.get("nom")
+            for i in list(models.serveurs.objects.all()):
+                if i.nom == nom:
+                    return render(request, "ajout.html", {"form": form, "url": url, "title": title,"error":"Un serveur avec ce nom existe deja."})
             form.save()
             return HttpResponseRedirect("/adminserver/serveurs")
         else:
@@ -108,6 +125,11 @@ def update_serveur(request, id):
             if (count_server_storage(serveur, "", "service") <= stockage) and (count_server_memory(serveur, "", "service") <= memoire):
                 serveur = form.save(commit=False)
                 serveur.id = id
+                nom = form.cleaned_data.get("nom")
+                for i in list(models.serveurs.objects.all()):
+                    if i.id != id:
+                        if i.nom == nom:
+                            return render(request, "update.html", {"form": form, "url": url, "title": title,"error": "Un serveur avec ce nom existe deja.","id":id})
                 serveur.save()
                 return HttpResponseRedirect("/adminserver/serveurs")
             else:
@@ -205,6 +227,10 @@ def ajout_typeserveur(request):
     if request.method == "POST":
         form = type_de_serveursForm(request.POST)
         if form.is_valid():
+            type = form.cleaned_data.get("type")
+            for i in list(models.type_de_serveurs.objects.all()):
+                if i.type == type:
+                    return render(request, "ajout.html", {"form": form, "url": url, "title": title,"error": "Ce type de serveur existe deja."})
             form.save()
             return HttpResponseRedirect("/adminserver/typesServeurs")
         else:
@@ -220,6 +246,11 @@ def update_typeserveur(request, id):
         if form.is_valid():
             type_serveur = form.save(commit=False)
             type_serveur.id = id
+            type = form.cleaned_data.get("type")
+            for i in list(models.type_de_serveurs.objects.all()):
+                if i.id != id:
+                    if i.type == type:
+                        return render(request, "update.html", {"form": form, "url": "typeServeur", "id": id,"title": title,"error": "Ce type de serveur existe deja."})
             type_serveur.save()
             return HttpResponseRedirect("/adminserver/typesServeurs")
         else:
@@ -286,11 +317,15 @@ def ajout_service(request):
             serveur = form.cleaned_data.get("serveur_de_lancement")
             storage = form.cleaned_data.get("espace_memoire_utilise")
             memory = form.cleaned_data.get("memoire_vive_necessaire")
+            if storage <= 0:
+                return render(request, "ajout.html", {"form": form,"url": url,"error":"L'espace de stockage sur le serveur ne peut pas etre inferieur ou egal a 0.","title": title})
+            if memory <= 0:
+                return render(request, "ajout.html", {"form": form,"url": url,"error":"L'utilisation de memoire vive sur le serveur ne peut pas etre inferieur ou egal a 0.","title": title})
             if (storage <= serveur.stockage - count_server_storage(serveur,"","service")) and (memory <= serveur.memoire - count_server_memory(serveur,"","service")):
                 form.save()
                 return HttpResponseRedirect("/adminserver/services")
             else:
-                return render(request,"ajout.html",{"form" : form,"url":url,"error":"L'espace de stockage sur ce serveur est insufisant!","title":title})
+                return render(request,"ajout.html",{"form" : form,"url":url,"error":"L'espace de stockage ou la memoire vive disponible sur ce serveur sont insufisantes!","title":title})
         else:
             return render(request,"ajout.html",{"form" : form,"url":url,"title":title})
     else:
@@ -306,13 +341,17 @@ def update_service(request, id):
             serveur = form.cleaned_data.get("serveur_de_lancement")
             storage = form.cleaned_data.get("espace_memoire_utilise")
             memory = form.cleaned_data.get("memoire_vive_necessaire")
+            if storage <= 0:
+                return render(request, "update.html", {"form": form, "id": id, "url": url,"error":"L'espace de stockage sur le serveur ne peut pas etre inferieur ou egal a 0.","title": title})
+            if memory <= 0:
+                return render(request, "update.html", {"form": form, "id": id, "url": url,"error":"L'utilisation de memoire vive sur le serveur ne peut pas etre inferieur ou egal a 0.","title": title})
             if (storage <= serveur.stockage - count_server_storage(serveur,id,"service")) and (memory <= serveur.memoire - count_server_memory(serveur,id,"service")):
                 service = form.save(commit=False)
                 service.id = id
                 service.save()
                 return HttpResponseRedirect("/adminserver/services")
             else:
-                return render(request, "update.html", {"form": form,"id":id, "url": url,"error": "L'espace de stockage sur le serveur est insufisant!","title":title})
+                return render(request, "update.html", {"form": form,"id":id, "url": url,"error": "L'espace de stockage ou la memoire vive disponible sur le serveur sont insufisantes!","title":title})
         else:
             return render(request, "update.html", {"form": form, "url": url,"id":id, "title": title})
     else:
@@ -404,6 +443,10 @@ def ajout_application(request):
                 else:
                     return render(request, "ajout.html", {"form": form, "url": url,"title":title,"error": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
             else:
+                if form.cleaned_data.get("espace_memoire_utilise") <= 0:
+                    return render(request, "ajout.html", {"form": form, "url": url, "title": title,"error": "Une application ne peut pas avoir une valeure de stockage inferieure ou egale a 0 octets."})
+                if form.cleaned_data.get("memoire_vive_necessaire") <= 0:
+                    return render(request, "ajout.html", {"form": form, "url": url, "title": title,"error": "Une application ne peut pas avoir une utilisation de memoire vive inferieure ou egale a 0 octets."})
                 form.save()
                 return HttpResponseRedirect("/adminserver/applications")
         else:
@@ -422,10 +465,10 @@ def update_application(request, id):
             temp = 0
             server_list = ""
             for i in serveurs:
-                serveur = i
                 storage = form.cleaned_data.get("espace_memoire_utilise")
                 memory = form.cleaned_data.get("memoire_vive_necessaire")
-                if (storage <= serveur.stockage - count_server_storage(serveur, id, "application")) and (memory <= serveur.memoire - count_server_memory(serveur,id, "application")):
+                serveur = i
+                if (storage <= serveur.stockage - count_server_storage(serveur,id,"application")) and (memory <= serveur.memoire - count_server_memory(serveur,id,"application")):
                     pass
                 else:
                     temp = temp + 1
@@ -439,6 +482,10 @@ def update_application(request, id):
                 else:
                     return render(request, "update.html", {"form": form, "url": url,"id":id,"title":title,"error": "L'espace de stockage ou la memoire sur les serveurs: " + server_list + " sont insufisantes!"})
             else:
+                if form.cleaned_data.get("espace_memoire_utilise") <= 0:
+                    return render(request, "update.html", {"form": form, "url": url, "id": id, "title": title,"error":"Une application ne peut pas avoir une valeure de stockage inferieure ou egale a 0 octets."})
+                if form.cleaned_data.get("memoire_vive_necessaire") <= 0:
+                    return render(request, "update.html", {"form": form, "url": url, "id": id, "title": title,"error":"Une application ne peut pas avoir une utilisation de memoire vive inferieure ou egale a 0 octets."})
                 application = form.save(commit=False)
                 application.id = id
                 application.serveurs.set(form.cleaned_data.get("serveurs"))
@@ -446,7 +493,7 @@ def update_application(request, id):
                 application.save()
                 return HttpResponseRedirect("/adminserver/applications")
         else:
-            return render(request, "ajout.html", {"form": form, "url": url,"id":id, "title": title})
+            return render(request, "update.html", {"form": form, "url": url,"id":id, "title": title})
     else:
         serveur = models.applications.objects.get(pk=id)
         form = applicationsForm(serveur.dico())
@@ -454,6 +501,7 @@ def update_application(request, id):
 
 def delete_application(request, id):
     application = models.applications.objects.get(pk=id)
+    os.remove("media/" + str(application.logo))
     application.delete()
     return HttpResponseRedirect("/adminserver/applications")
 
@@ -465,7 +513,6 @@ def affiche_application(request, id):
         application.memoire_vive_necessaire_adapt = str(round(application.memoire_vive_necessaire/1000,2)) + "Go"
     else:
         application.memoire_vive_necessaire_adapt = str(application.memoire_vive_necessaire) + "Mo"
-
     if len(str(application.espace_memoire_utilise)) > 6:
         application.espace_memoire_utilise_adapt = str(round(application.espace_memoire_utilise/1000000,2)) + "To"
     elif len(str(application.espace_memoire_utilise)) > 3:
@@ -490,6 +537,10 @@ def ajout_utilisateur(request):
     if request.method == "POST":
         form = utilisateursForm(request.POST)
         if form.is_valid():
+            email = form.cleaned_data.get("email")
+            for i in list(models.utilisateurs.objects.all()):
+                if i.email == email:
+                    return render(request, "ajout.html", {"form": form, "url": url, "title": title,"error": "Un utilisateur avec cet email existe deja."})
             form.save()
             return HttpResponseRedirect("/adminserver/utilisateurs")
         else:
@@ -505,6 +556,11 @@ def update_utilisateur(request, id):
         if form.is_valid():
             utilisateur = form.save(commit=False)
             utilisateur.id = id
+            email = form.cleaned_data.get("email")
+            for i in list(models.utilisateurs.objects.all()):
+                if i.id != id:
+                    if i.email == email:
+                        return render(request, "update.html", {"form": form, "url":"utilisateur", "title": title,"error": "Un compte avec cet email existe deja.","id":id})
             utilisateur.save()
             return HttpResponseRedirect("/adminserver/utilisateurs")
         else:

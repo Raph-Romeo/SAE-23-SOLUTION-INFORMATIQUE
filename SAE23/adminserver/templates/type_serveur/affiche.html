@@ -17,7 +17,7 @@ Admin-Serveur - Affiche
 
 {% for i in serveurs %}
 
-<li><a class="object_title" href="/affiche/serveur/{{i.id}}/">{{i}}</a><br><a href="/delete/serveur/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/serveur/{{i.id}}/">Ajourner</a><div class="server_img"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div></div><p>{{i.ratio}}</p></li>
+<li><a class="object_title" href="/affiche/serveur/{{i.id}}/">{{i}}</a><br><br><div class="server_img"></div><div class="progress"> <div class="value" style="width:{{i.progress}}%;background:{{i.color}}"> </div></div><p>{{i.ratio}}</p></li>
 
 {% endfor %}
 
