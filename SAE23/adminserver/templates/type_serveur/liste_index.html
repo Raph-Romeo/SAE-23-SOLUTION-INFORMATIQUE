@@ -9,9 +9,10 @@ Admin-Serveur | {{title}}
 <a class="yes" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
 {% elif count > 0 %}
 <a class="addlink" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
+<p class="errorlist" style="margin:10px"> {{error}} </p>
 <ul style="margin-top:25px;max-width:80%;list-style:none;">
 {% for i in objects %}
-    <hr><br><li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><br><p style="margin-left:20px;width:calc(100% - 40px);text-align:justify">Description : {{i.description}}</p><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a></li><br>
+<hr><br><li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><br><p style="margin-left:20px;width:calc(100% - 40px);text-align:justify">Description : {{i.description}}</p><br><a href="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a></li><br>
 {% endfor %}
 </ul>
 {% endif %}

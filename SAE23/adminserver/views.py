@@ -47,9 +47,6 @@ def count_server_memory(element,id,type):
 def index(request):
     return render(request, 'index.html')
 
-def ajout(request):
-    return render(request, 'index_ajout.html')
-
 #CRUD SERVEUR ==========================================================================================================================
 
 def serveurs_index(request):
@@ -80,7 +77,10 @@ def serveurs_index(request):
             i.ratio = "ERROR"
         i.progress = str(i.progress).replace(",", ".")
     num = len(list(models.serveurs.objects.all()))
-    return render(request,"liste_index.html",{"objects" : serveurs,"title":"SERVEURS","extra":"server_img","url":URL,"count":num})
+    if request.method == 'GET' and 'error' in request.GET:
+        return render(request,"serveur/liste_index.html",{"objects" : serveurs,"title":"SERVEURS","extra":"server_img","url":URL,"count":num,"error":request.GET['error']})
+    else:
+        return render(request,"serveur/liste_index.html",{"objects" : serveurs,"title":"SERVEURS","extra":"server_img","url":URL,"count":num})
 
 def ajout_serveur(request):
     title = "Ajouter un serveur"
@@ -121,6 +121,10 @@ def update_serveur(request, id):
 
 def delete_serveur(request, id):
     serveur = models.serveurs.objects.get(pk=id)
+    if len(list(models.applications.objects.filter(serveurs=serveur))) > 0:
+        return HttpResponseRedirect("/adminserver/serveurs?error=Impossible de supprimer ce serveur car il contient des services ou des applications.")
+    if len(list(models.services.objects.filter(serveur_de_lancement=serveur))) > 0:
+        return HttpResponseRedirect("/adminserver/serveurs?error=Impossible de supprimer ce serveur car il contient des services ou des applications.")
     serveur.delete()
     return HttpResponseRedirect("/adminserver/serveurs")
 
@@ -150,6 +154,38 @@ def affiche_serveur(request, id):
     elif temp > 0:
         serveur.ratio = str(temp) + "Mo restants"
     serveur.memory_percent = str(round((count_server_memory(serveur, "", "") / serveur.memoire) * 100, 2)) + "%"
+    count = 0
+    for q in list(models.services.objects.filter(serveur_de_lancement=serveur.id)):
+        count = count + q.espace_memoire_utilise
+    for q in list(models.applications.objects.filter(serveurs=serveur.id)):
+        count = count + q.espace_memoire_utilise
+    serveur.progress_stockage = round((count / serveur.stockage) * 100, 2)
+    if serveur.progress_stockage >= 0:
+        serveur.color_stockage = "#24a4dc"
+        if serveur.progress_stockage >= 75:
+            serveur.color_stockage = "orange"
+            if serveur.progress_stockage >= 90:
+                serveur.color_stockage = "#d92624"
+    serveur.progress_stockage = str(serveur.progress_stockage).replace(",",".")
+    count = 0
+    for q in list(models.services.objects.filter(serveur_de_lancement=serveur.id)):
+        count = count + q.memoire_vive_necessaire
+    for q in list(models.applications.objects.filter(serveurs=serveur.id)):
+        count = count + q.memoire_vive_necessaire
+    serveur.progress_memoire = round((count / serveur.memoire) * 100, 2)
+    if serveur.progress_memoire >= 0:
+        serveur.color_memoire = "#24a4dc"
+        if serveur.progress_memoire >= 75:
+            serveur.color_memoire = "orange"
+            if serveur.progress_memoire >= 90:
+                serveur.color_memoire = "#d92624"
+    if len(str(serveur.memoire)) > 6:
+        serveur.memoire_adapt = str(serveur.memoire / 1000000) + "To"
+    elif len(str(serveur.memoire)) > 3:
+        serveur.memoire_adapt = str(serveur.memoire / 1000) + "Go"
+    else:
+        serveur.memoire_adapt = str(serveur.memoire) + "Mo"
+    serveur.progress_memoire = str(serveur.progress_memoire).replace(",",".")
     return render(request,"serveur/affiche.html",{"serveur" : serveur,"applications":applications,"services":services,"services_count":services_count,"applications_count":applications_count})
 
 
@@ -158,7 +194,10 @@ def typesServeurs_index(request):
     URL = "typeServeur"
     typesServeurs = list(models.type_de_serveurs.objects.all())
     num = len(list(models.type_de_serveurs.objects.all()))
-    return render(request,"type_serveur/liste_index.html",{"objects" : typesServeurs,"title":"TYPES DE SERVEURS","extra":"","url":URL,"count":num})
+    if request.method == 'GET' and 'error' in request.GET:
+        return render(request, "type_serveur/liste_index.html",{"objects": typesServeurs, "title": "TYPES DE SERVEURS", "extra": "", "url": URL, "count": num,"error":request.GET["error"]})
+    else:
+        return render(request,"type_serveur/liste_index.html",{"objects" : typesServeurs,"title":"TYPES DE SERVEURS","extra":"","url":URL,"count":num})
 
 def ajout_typeserveur(request):
     title = "Ajouter un type de serveur"
@@ -192,6 +231,8 @@ def update_typeserveur(request, id):
 
 def delete_typeserveur(request, id):
     type_serveur = models.type_de_serveurs.objects.get(pk=id)
+    if len(list(models.serveurs.objects.filter(type_de_serveur = type_serveur))) > 0:
+        return HttpResponseRedirect("/adminserver/typesServeurs?error=Impossible de supprimer ce type de serveur car certain serveurs sont déjà associés à celui-ci.")
     type_serveur.delete()
     return HttpResponseRedirect("/adminserver/typesServeurs")
 
@@ -231,7 +272,10 @@ def services_index(request):
     URL = "service"
     services = list(models.services.objects.all())
     num = len(list(models.services.objects.all()))
-    return render(request,"liste_index.html",{"objects" : services,"title":"SERVICES","extra":"","url":URL,"count":num})
+    if request.method == 'GET' and 'error' in request.GET:
+        return render(request,"services/liste_index.html",{"objects" : services,"title":"SERVICES","extra":"","url":URL,"count":num,"error":request.GET["error"]})
+    else:
+        return render(request, "services/liste_index.html",{"objects": services, "title": "SERVICES", "extra": "", "url": URL, "count": num})
 
 def ajout_service(request):
     title = "Ajouter un service"
@@ -246,7 +290,7 @@ def ajout_service(request):
                 form.save()
                 return HttpResponseRedirect("/adminserver/services")
             else:
-                return render(request,"ajout.html",{"form" : form,"url":url,"erreur":"L'espace de stockage sur ce serveur est insufisant!","title":title})
+                return render(request,"ajout.html",{"form" : form,"url":url,"error":"L'espace de stockage sur ce serveur est insufisant!","title":title})
         else:
             return render(request,"ajout.html",{"form" : form,"url":url,"title":title})
     else:
@@ -278,12 +322,52 @@ def update_service(request, id):
 
 def delete_service(request, id):
     service = models.services.objects.get(pk=id)
-    service.delete()
-    return HttpResponseRedirect("/adminserver/services")
+    if len(list(models.applications.objects.filter(services_utilises=service))) == 0:
+        service.delete()
+        return HttpResponseRedirect("/adminserver/services")
+    else:
+        return HttpResponseRedirect("/adminserver/services?error=Impossible de supprimer le service " + service.nom_service + " car certaines applications utilisent ce service.")
 
 def affiche_service(request, id):
     service = models.services.objects.get(pk=id)
-    return render(request,"services/affiche.html",{"service" : service})
+    serveur = service.serveur_de_lancement
+    if len(str(service.memoire_vive_necessaire)) > 6:
+        service.memoire_vive_necessaire_adapt = str(round(service.memoire_vive_necessaire/1000000,2)) + "To"
+    elif len(str(service.memoire_vive_necessaire)) > 3:
+        service.memoire_vive_necessaire_adapt = str(round(service.memoire_vive_necessaire/1000,2)) + "Go"
+    else:
+        service.memoire_vive_necessaire_adapt = str(service.memoire_vive_necessaire) + "Mo"
+
+    if len(str(service.espace_memoire_utilise)) > 6:
+        service.espace_memoire_utilise_adapt = str(round(service.espace_memoire_utilise/1000000,2)) + "To"
+    elif len(str(service.espace_memoire_utilise)) > 3:
+        service.espace_memoire_utilise_adapt = str(round(service.espace_memoire_utilise/1000,2)) + "Go"
+    else:
+        service.espace_memoire_utilise_adapt = str(service.espace_memoire_utilise) + "Mo"
+    count = 0
+    for q in list(models.services.objects.filter(serveur_de_lancement=serveur.id)):
+        count = count + q.espace_memoire_utilise
+    for q in list(models.applications.objects.filter(serveurs=serveur.id)):
+        count = count + q.espace_memoire_utilise
+    serveur.progress = round((count / serveur.stockage) * 100, 2)
+    if serveur.progress >= 0:
+        serveur.color = "#24a4dc"
+        if serveur.progress >= 75:
+            serveur.color = "orange"
+            if serveur.progress >= 90:
+                serveur.color = "#d92624"
+    if len(str(serveur.stockage - count)) > 6:
+        serveur.ratio = str(round((serveur.stockage - count) / 1000000, 2)) + "To restants"
+    elif len(str(serveur.stockage - count)) > 3:
+        serveur.ratio = str(round((serveur.stockage - count) / 1000, 2)) + "Go restants"
+    elif serveur.stockage - count > 0:
+        serveur.ratio = str(serveur.stockage - count) + "Mo restants"
+    elif serveur.stockage - count == 0:
+        serveur.ratio = "FULL"
+    else:
+        serveur.ratio = "ERROR"
+    serveur.progress = str(serveur.progress).replace(",", ".")
+    return render(request,"services/affiche.html",{"service" : service,"serveur":serveur})
 
 #CRUD APPLICATION ==========================================================================================================================
 
@@ -375,7 +459,22 @@ def delete_application(request, id):
 
 def affiche_application(request, id):
     application = models.applications.objects.get(pk=id)
-    return render(request,"application/affiche.html",{"application" : application})
+    if len(str(application.memoire_vive_necessaire)) > 6:
+        application.memoire_vive_necessaire_adapt = str(round(application.memoire_vive_necessaire/1000000,2)) + "To"
+    elif len(str(application.memoire_vive_necessaire)) > 3:
+        application.memoire_vive_necessaire_adapt = str(round(application.memoire_vive_necessaire/1000,2)) + "Go"
+    else:
+        application.memoire_vive_necessaire_adapt = str(application.memoire_vive_necessaire) + "Mo"
+
+    if len(str(application.espace_memoire_utilise)) > 6:
+        application.espace_memoire_utilise_adapt = str(round(application.espace_memoire_utilise/1000000,2)) + "To"
+    elif len(str(application.espace_memoire_utilise)) > 3:
+        application.espace_memoire_utilise_adapt = str(round(application.espace_memoire_utilise/1000,2)) + "Go"
+    else:
+        application.espace_memoire_utilise_adapt = str(application.espace_memoire_utilise) + "Mo"
+    serveurs = list(application.serveurs.all())
+    services = list(application.services_utilises.all())
+    return render(request,"application/affiche.html",{"application" : application,"serveurs":serveurs,"services":services,"serveurs_count":len(serveurs),"services_count":len(services)})
 
 #CRUD UTILISATEUR ==========================================================================================================================
 
@@ -383,7 +482,7 @@ def utilisateurs_index(request):
     URL = "utilisateur"
     utilisateurs = list(models.utilisateurs.objects.all())
     num = len(list(models.utilisateurs.objects.all()))
-    return render(request,"liste_index.html",{"objects" : utilisateurs,"title":"UTILISATEURS","extra":"","url":URL,"count":num})
+    return render(request,"utilisateurs/liste_index.html",{"objects" : utilisateurs,"title":"UTILISATEURS","extra":"","url":URL,"count":num})
 
 def ajout_utilisateur(request):
     title = "Ajouter un utilisateur"
@@ -417,10 +516,12 @@ def update_utilisateur(request, id):
 
 def delete_utilisateur(request, id):
     utilisateur = models.utilisateurs.objects.get(pk=id)
+    for i in list(models.applications.objects.filter(utilisateurs=utilisateur)):
+        i.delete()
     utilisateur.delete()
     return HttpResponseRedirect("/adminserver/utilisateurs")
 
 def affiche_utilisateur(request, id):
     utilisateur = models.utilisateurs.objects.get(pk=id)
-    return render(request,"utilisateurs/affiche.html",{"utilisateur" : utilisateur})
-
+    objects = list(models.applications.objects.filter(utilisateurs=utilisateur))
+    return render(request,"utilisateurs/affiche.html",{"utilisateur" : utilisateur,"objects":objects,"count":len(objects)})

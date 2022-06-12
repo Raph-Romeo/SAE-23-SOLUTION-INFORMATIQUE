@@ -54,7 +54,7 @@ class applicationsForm(ModelForm):
             'nom_application' : _("Nom de l'application:"),
             'logo' : _('Logo:'),
             'serveurs' : _('Serveurs:'),
-            'utilisateurs' : _("Utilisateurs de l'application:"),
+            'utilisateurs' : _("Utilisateur de l'application:"),
             'espace_memoire_utilise' : _("Espace memoire utilisée par l'application:"),
             'memoire_vive_necessaire' : _('Memoire vive necessaire'),
             'services_utilises' : _('Services utilises'),

@@ -18,6 +18,9 @@ ol > li{padding:40px;margin:40px;list-style:none;text-align:center;border-radius
 
 ol > li:hover{transition:0.2s;transform:scale(1.05);}
 
+.services{margin-top:50px;display:flex;flex-wrap:wrap;}
+.services > li{list-style:none;width:200px;padding:20px;text-align:center;}
+
 .home-2{display:flex;width:100%;justify-content:center;align-items:center;}
 
 .text{line-height:4;text-align:center;}
@@ -26,7 +29,7 @@ ol > li:hover{transition:0.2s;transform:scale(1.05);}
 .yes{font-size:25px;font-family:tahoma;font-weight:1;color:#444;margin-top:50px;padding:5px;text-decoration:none;border-radius:5px;background:#E2E2E2}
 .yes:active{background:#CCC;box-shadow:none;}
 
-.bg{clip-path: polygon(0 0, 100% 0, 100% 91%, 0% 100%);background:url(/static/background.jpg);margin-top:50px;width:100%;min-height:80vh;display:flex;justify-content:center;align-items:center;margin-bottom:25px;flex-direction:column;background-size:cover;background-attachment:fixed;}
+.bg{clip-path: polygon(0 0, 100% 0, 100% 91%, 0% 100%);background:url(/static/background.jpg);margin-top:50px;width:100%;min-height:80vh;display:flex;justify-content:center;align-items:center;margin-bottom:25px;flex-direction:column;background-size:cover;background-attachment:fixed;animation:background_right_bottom 60s linear forwards}
 h2{font-size:26px;}
 
 .errorlist{color:red;font-family:tahoma;}
@@ -38,6 +41,19 @@ h2{font-size:26px;}
 .left{border-right:1px solid #222;}
 .container > *{width:50%}
 ul{max-width:100%;}
+
+
+@keyframes background_right_bottom {
+	0% {
+		background-position: right bottom;
+		background-size: 100%;
+	}
+
+	100% {
+		background-position: right bottom;
+		background-size: 150%;
+	}
+}
 
 
 progress {

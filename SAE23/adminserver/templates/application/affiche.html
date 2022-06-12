@@ -4,6 +4,45 @@ Admin-Serveur - Affiche
 {% endblock %}
 {% block content %}
 
-<h2> AFFICHE </h2>
+<h2> {{application.nom_application}} </h2>
+<img style="width:150px;height:150px;margin:20px;" src="/media/{{application.logo}}"/>
+<p> <img src="/static/disc.png" style="width:40px;height:40px;position:absolute;margin-left:-55px;margin-top:-8px"/> Taille sur le disque: {{application.espace_memoire_utilise_adapt}} </p>
+<br>
+<br>
+<p> <img src="/static/ram.png" style="width:40px;height:40px;position:absolute;margin-left:-55px;margin-top:-8px"/> Memoire vive: {{application.memoire_vive_necessaire_adapt}} </p>
+<br>
+<h2> Utilisateur de cette application: </h2>
+<a href="/affiche/utilisateur/{{application.utilisateurs_id}}/"> <img src="/static/user.png" style="width:40px;height:40px;position:absolute;margin-left:-55px;margin-top:-8px"/> <p> {{application.utilisateurs}} </p> </a>
 
+{% if services_count > 0 or serveurs_count > 0 %}
+<div class="container">
+<div class="left">
+{% if services_count > 0 %}
+<h2>Les services utilisés par cette application:</h2>
+<ul class="liste">
+{% for i in services %}
+<li><a href="/affiche/service/{{i.id}}/">{{i}}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<h2 class="error">Aucun service n'est utilisé par cette application</h2>
+{% endif %}
+</div>
+<div class="right">
+{% if serveurs_count > 0 %}
+
+<h2>Les serveurs contenant cette application:</h2>
+<ul class="liste">
+{% for i in serveurs %}
+<li><a href="/affiche/serveur/{{i.id}}/">{{i}}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+<h2 class="error">Aucun serveur ne contient cette application</h2>
+{% endif %}
+</div>
+</div>
+{% else %}
+<h2 class="error">Aucun service ou application n'est associé a cette application</h2>
+{% endif %}
 {% endblock %}

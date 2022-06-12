@@ -11,7 +11,6 @@ urlpatterns = [
     path('applications',views.applications_index),
     path('typesServeurs',views.typesServeurs_index),
 #AJOUTS
-    path('ajout',views.ajout), #DEBUG
     path('ajout/serveur',views.ajout_serveur),
     path('ajout/utilisateur',views.ajout_utilisateur),
     path('ajout/service',views.ajout_service),
