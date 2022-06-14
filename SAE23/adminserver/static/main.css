@@ -16,6 +16,8 @@ form > li > input{min-width:200px;border:1px solid #DDD;min-height:25px;font-siz
 ol{display:flex;width:80vw;flex-wrap:wrap;justify-content:center;}
 ol > li{padding:40px;margin:40px;list-style:none;text-align:center;border-radius:5px;background:#EEE;box-shadow:#BBB 5px 5px 5px;transition:0.2s}
 
+input[type=submit]{border:1px solid #DDD;padding:8px;cursor:pointer;font-family:tahoma;font-weight:100;margin-top:5px;font-size:18px;padding-right:10px;padding-left:10px;}
+
 textarea{border:1px solid #DDD;font-size:16px;font-family:arial;margin-top:5px;}
 
 ol > li:hover{transition:0.2s;transform:scale(1.05);}
