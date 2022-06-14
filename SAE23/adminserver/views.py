@@ -60,6 +60,52 @@ def count_server_memory(element,id,type):
 def index(request):
     return render(request, 'index.html')
 
+def database(request):
+    if len(list(models.serveurs.objects.all())) > 1:
+        a = "Serveurs : " + str(len(list(models.serveurs.objects.all()))) + " elements."
+    elif len(list(models.serveurs.objects.all())) == 1:
+        a = "Serveurs : 1 element."
+    else:
+        a = "Serveurs : Aucun element."
+    if len(list(models.type_de_serveurs.objects.all())) > 1:
+        b = "Types de serveurs : " + str(len(list(models.type_de_serveurs.objects.all()))) + " elements."
+    elif len(list(models.type_de_serveurs.objects.all())) == 1:
+        b = "Types de serveurs : 1 element."
+    else:
+        b = "Types de serveurs : Aucun element."
+    if len(list(models.services.objects.all())) > 1:
+        c = "Services : " + str(len(list(models.services.objects.all()))) + " elements."
+    elif len(list(models.services.objects.all())) == 1:
+        c = "Services : 1 element."
+    else:
+        c = "Services : Aucun element."
+    if len(list(models.applications.objects.all())) > 1:
+        d = "Applications : " + str(len(list(models.applications.objects.all()))) + " elements."
+    elif len(list(models.applications.objects.all())) == 1:
+        d = "Applications : 1 element."
+    else:
+        d = "Applications : Aucun element."
+    if len(list(models.utilisateurs.objects.all())) > 1:
+        e = "Utilisateurs : " + str(len(list(models.utilisateurs.objects.all()))) + " elements."
+    elif len(list(models.utilisateurs.objects.all())) == 1:
+        e = "Utilisateurs : 1 element."
+    else:
+        e = "Utilisateurs : Aucun element."
+    return render(request, 'database.html',{"a":a,"b":b,"c":c,"d":d,"e":e,})
+
+def database_delete(request):
+    for i in list(models.type_de_serveurs.objects.all()):
+        i.delete()
+    for i in list(models.serveurs.objects.all()):
+        i.delete()
+    for i in list(models.services.objects.all()):
+        i.delete()
+    for i in list(models.applications.objects.all()):
+        i.delete()
+    for i in list(models.utilisateurs.objects.all()):
+        i.delete()
+    return HttpResponseRedirect("/adminserver/database")
+
 #CRUD SERVEUR ==========================================================================================================================
 
 def serveurs_index(request):
@@ -501,7 +547,7 @@ def update_application(request, id):
 
 def delete_application(request, id):
     application = models.applications.objects.get(pk=id)
-    os.remove("media/" + str(application.logo))
+    #os.remove("media/" + str(application.logo))
     application.delete()
     return HttpResponseRedirect("/adminserver/applications")
 

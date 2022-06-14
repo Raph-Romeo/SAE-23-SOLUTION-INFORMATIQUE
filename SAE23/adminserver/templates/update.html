@@ -8,6 +8,6 @@ Admin-Serveur | {{title}}
 <form method="post" action="/adminserver/update/{{url}}/{{id}}/" enctype="multipart/form-data">
 {% csrf_token %}
 {{ form.as_ul }}
-<input type="submit" value="AJOURNER">
+<input type="submit" value="ACTUALISER">
 </form>
 {% endblock %}

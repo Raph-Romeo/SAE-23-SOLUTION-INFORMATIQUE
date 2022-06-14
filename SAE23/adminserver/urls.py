@@ -4,6 +4,8 @@ from . import views
 urlpatterns = [
     path('',views.index),
     path('home',views.index),
+    path('database', views.database),
+    path('database/delete', views.database_delete),
 #INDEXAGE DES OBJECTS DE LA BASE DE DONNEE
     path('serveurs', views.serveurs_index),
     path('services',views.services_index),

@@ -11,7 +11,7 @@ Admin-Serveur | {{title}}
 <a class="addlink" href="/ajout/{{url}}"> AJOUTER DES {{title}}</a>
 <ol>
 {% for i in objects %}
-    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a style="text-decoration:underline;cursor:pointer;" name="delete" id="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Ajourner</a><br><br><img src="/media/{{i.logo}}" style="height:200px"></div></li>
+    <li><a class="object_title" href="/affiche/{{url}}/{{i.id}}/">{{i}}</a><br><a style="text-decoration:underline;cursor:pointer;" name="delete" id="/delete/{{url}}/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/{{url}}/{{i.id}}/">Modifier</a><br><br><img src="/media/{{i.logo}}" style="height:200px"></div></li>
 {% endfor %}
 </ol>
 {% endif %}
@@ -28,7 +28,7 @@ Admin-Serveur | {{title}}
 	}
 
 	function prompt(element){
-	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;border-radius:15px;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;box-shadow:50px 50px 500px black;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir supprimer cette application?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
+	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;outline: 10000px rgba(0,0,0,0.5) solid;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir supprimer cette application?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
 	    document.body.style.pointerEvents = "none";
 	}
 

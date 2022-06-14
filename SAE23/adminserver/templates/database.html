@@ -1,0 +1,57 @@
+{% extends "main.html" %}
+{% block title %}
+Admin-Serveur | Ajouts
+{% endblock %}
+{% block content %}
+<h2> PARAMETRER LA BASE DE DONNEE </h2>
+
+<h2> Elements dans la base de donnée: </h2>
+<hr style="width:350px;">
+<a class="list_database" href="/adminserver/serveurs" ><p> {{a}} </p></a>
+<hr style="width:350px;">
+<a class="list_database" href="/adminserver/typesServeurs" ><p> {{b}} </p></a>
+<hr style="width:350px;">
+<a class="list_database" href="/adminserver/services" ><p> {{c}} </p></a>
+<hr style="width:350px;">
+<a class="list_database" href="/adminserver/applications" ><p> {{d}} </p></a>
+<hr style="width:350px;">
+<a class="list_database" href="/adminserver/utilisateurs" ><p> {{e}} </p></a>
+<hr style="width:350px;">
+
+<div class="space" style="height:100px"></div>
+
+<a style="text-decoration:underline;cursor:pointer;" id="/adminserver/database/delete" name="delete"><h2> Supprimer tous les elements de la base de donnée. </h2></a>
+<a href="#"><h2> Insérer un fichier texte contenant les parametres de la base de donnée. </h2> </a>
+
+<script>
+	var all = document.getElementsByName('delete');
+
+	for (var i=0; i<all.length; i++)
+	{
+		all.item(i).onclick = function ()
+		{
+			prompt(this.id);
+		}
+	}
+
+	function prompt(element){
+	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;outline: 10000px rgba(0,0,0,0.5) solid;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir vider la base de donnée?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
+	    document.body.style.pointerEvents = "none";
+	}
+
+	function move(url){
+	    window.location.replace(url);
+	}
+
+	function annuler(){
+	    document.getElementById("prompt").remove();
+	    document.body.style.pointerEvents = "all";
+	    for (var i=0; i<all.length; i++){
+		    all.item(i).onclick = function (){
+			    prompt(this.id);
+		    }
+	    }
+	}
+</script>
+
+{% endblock %}

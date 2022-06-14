@@ -28,7 +28,7 @@ Admin-Serveur | {{title}}
 	}
 
 	function prompt(element){
-	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;border-radius:15px;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;box-shadow:50px 50px 500px black;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir supprimer cet utilisateur?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
+	    document.body.innerHTML += "<div id='prompt' style='display:flex;align-items:center;flex-direction:column;height:200px;width:500px;position:absolute;left:calc(50vw - 250px);top:calc(40vh - 100px);z-index:10;background:#EEE;outline: 10000px rgba(0,0,0,0.5) solid;pointer-events:all;'><h2 class='error' style='text-align:center;'>êtes-vous sûr de vouloir supprimer cet utilisateur?</h2><div class='action_prompt'><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onclick='move(\"" + element + "\")'>" + "Oui" + "</button><button style='width:90px;height:30px;margin:30px;cursor:pointer;' onClick='annuler()'>Annuler</button></div></div>";
 	    document.body.style.pointerEvents = "none";
 	}
 

@@ -18,7 +18,7 @@ Admin-Serveur - Affiche
 <h2> Applications de cet utilisateur: </h2>
 <ol>
 {% for i in objects %}
-    <li><a class="object_title" href="/affiche/application/{{i.id}}/">{{i}}</a><br><a href="/delete/application/{{i.id}}/">Supprimer</a><line>|</line><a href="/update/application/{{i.id}}/">Ajourner</a><br><br><img src="/media/{{i.logo}}" style="height:200px"></div></li>
+    <li><a class="object_title" href="/affiche/application/{{i.id}}/">{{i}}</a><br><br><br><img src="/media/{{i.logo}}" style="height:200px"></div></li>
 {% endfor %}
 </ol>
 {% else %}

@@ -8,9 +8,23 @@
   <body>
    <nav>
     <h1> <a href="/adminserver/">ADMINISTRATION DE SERVEURS</a> </h1>
-    <div class="liens"><a href="/adminserver/serveurs">SERVEURS</a><a href="/adminserver/typesServeurs">TYPES DE SERVEURS</a><a href="/adminserver/services">SERVICES</a><a href="/adminserver/applications">APPLICATIONS</a><a href="/adminserver/utilisateurs">UTILISATEURS</a></div>
+    <div class="liens"><a class="lien" href="/adminserver/serveurs">SERVEURS</a><a class="lien" href="/adminserver/typesServeurs">TYPES DE SERVEURS</a><a class="lien" href="/adminserver/services">SERVICES</a><a class="lien" href="/adminserver/applications">APPLICATIONS</a><a class="lien" href="/adminserver/utilisateurs">UTILISATEURS</a><a class="nav_button_a"><button onclick="mobile_nav()" class="nav_button">≡</button></a></div>
    </nav>
+   <div id="mobile_nav" class="mobile_nav"><a href="/adminserver/serveurs"><h2>SERVEURS</h2></a><a href="/adminserver/typesServeurs"><h2>TYPE DE SERVEURS</h2></a><a href="/adminserver/services"><h2>SERVICES</h2></a><a href="/adminserver/applications"><h2>APPLICATIONS</h2></a><a href="/adminserver/utilisateurs"><h2>UTILISATEURS</h2></a></div>
 	{% block content %}
 	{% endblock %}
+    <script>
+        var clicked = 0;
+        function mobile_nav(){
+            if (clicked == 0){
+                clicked = 1;
+                document.getElementById("mobile_nav").style.right = "0";
+            }
+            else if (clicked == 1){
+                clicked = 0;
+                document.getElementById("mobile_nav").style.right = "-75vw";
+            }
+        }
+    </script>
   </body>
  </html>
