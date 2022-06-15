@@ -48,4 +48,6 @@ Admin-Serveur - {{serveur.nom}}
 {% else %}
 <h2 class="error">Aucun service ou application n'est associé a ce serveur</h2>
 {% endif %}
+<div class="space" style="height:200px;"></div>
+<a href="/adminserver/serveurs/rapport_pdf/{{serveur.id}}/" target="blank_"><h2>Obtenir une fiche PDF</h2></a>
 {% endblock %}

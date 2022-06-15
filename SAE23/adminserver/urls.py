@@ -6,7 +6,8 @@ urlpatterns = [
     path('home',views.index),
     path('database', views.database),
     path('database/delete', views.database_delete),
-#INDEXAGE DES OBJECTS DE LA BASE DE DONNEE
+    path('serveurs/rapport_pdf/<int:id>/', views.serveur_pdf),
+#INDEXAGE DES TABLES DE LA BASE DE DONNEE
     path('serveurs', views.serveurs_index),
     path('services',views.services_index),
     path('utilisateurs',views.utilisateurs_index),
