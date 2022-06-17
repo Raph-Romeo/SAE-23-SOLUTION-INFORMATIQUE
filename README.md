@@ -13,4 +13,4 @@ ce sujet va vous permettre de fournir une interface de gestion de serveurs infor
 Vous devez implémenter un CRUD pour chacun de ces types de données. vous préparerez la base en avance et la remplirez avec des type de serveurs, des serveurs, des services, et des utilisateurs.
 Votre site web devra permettre la saisie de nouveaux serveurs, services  et application. L'ajout de service et d'application devra vérifier que l'espace mémoire et le nombre de processeur est suffisant sur la machine. Vous devrez aussi pouvoir insérer une application et ses services associés sur un serveur l'aide d'un fichier. La structure du fichier attendu devra bien sur être décrite soit dans une aide, soit en préambule de la page de chargement.
 
-Vous devrez être à même de pouvoir générer une fiche des services et applications lancées sur un serveur. 
+Vous devrez être à même de pouvoir générer une fiche des services et applications lancées sur un serveur.
