@@ -1,0 +1,6 @@
+Script SQL:
+create database adminserver;
+use adminserver
+CREATE USER "adminserver"@"localhost" IDENTIFIED BY "toto";
+GRANT ALL PRIVILEGES ON *.* TO "adminserver"@"localhost";
+FLUSH PRIVILEGES
